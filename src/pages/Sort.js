@@ -5,6 +5,15 @@ const Sort = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [trace, setTrace] = useState([]);
   let t = [];
+  let timer = setTimeout(stepForward, 1000);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   useEffect(() => {
     resetTrace();
@@ -44,49 +53,23 @@ const Sort = () => {
     });
   }
 
-  // function bubbleSort() {
-  //   let array = arrayToSort.slice();
-  //   for (let i = 0; i < array.length - 1; i++) {
-  //     for (let j = 0; j < array.length - i - 1; j++) {
-  //       if (array[j] > array[j + 1]) {
-  //         let temp = array[j];
-  //         array[j] = array[j + 1];
-  //         array[j + 1] = temp;
-  //         setTrace((prev) => {
-  //           console.log(prev);
-  //           // prev.push([array]);
-  //           // return prev;
-  //         });
-  //       }
-  //       console.log(trace);
-  //     }
-  //   }
-  // }
-
-  function sorty() {
+  function bubbleSort() {
     let array = trace[trace.length - 1].slice();
-    for (let i = 1; i < array.length; i++) {
-      if (array[i - 1] > array[i]) {
-        let temp = array[i - 1];
-        array[i - 1] = array[i];
-        array[i] = temp;
-        return array;
+    for (let i = 0; i < array.length - 1; i++) {
+      for (let j = 0; j < array.length - i - 1; j++) {
+        if (array[j] > array[j + 1]) {
+          let temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
+          t.push([...array]);
+          setTrace(() => {
+            return t;
+          });
+          setCurrentStep(t.length - 1);
+          console.log(t);
+        }
       }
     }
-    return array;
-  }
-
-  function addTrace() {
-    setTrace((prev) => {
-      let a = sorty();
-      if (arraysAreEqual(prev[prev.length - 1], a)) {
-        console.log("sorted");
-        return prev;
-      }
-      setCurrentStep(trace.length);
-      return [...prev, a];
-      // return a;
-    });
   }
 
   function arraysAreEqual(arrayOne, arrayTwo) {
@@ -115,7 +98,7 @@ const Sort = () => {
 
         <button
           className="control-button sort-array"
-          onClick={() => addTrace()}
+          onClick={() => bubbleSort()}
         >
           sort
         </button>
@@ -152,7 +135,7 @@ const Sort = () => {
                 );
               })
             : "empty"}
-          {/* {trace.length} */}
+          {trace.length}
         </div>
       </div>
     </>
