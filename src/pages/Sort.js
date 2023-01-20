@@ -1,27 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../App.css";
 
 const Sort = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [trace, setTrace] = useState([]);
+  const timer = useRef(0);
   let t = [];
-  let timer = setTimeout(stepForward, 1000);
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-
-  //   }, 1000);
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+  let isPaused = true;
 
   useEffect(() => {
     resetTrace();
   }, []);
-
-  useEffect(() => {
-    console.log(trace);
-  }, [trace]);
 
   function resetTrace() {
     setCurrentStep(0);
@@ -35,7 +24,7 @@ const Sort = () => {
 
   function generateRandomArray() {
     let array = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       array.push(Math.floor(Math.random() * 200 - 5 + 1) + 5);
     }
     return array;
@@ -47,10 +36,27 @@ const Sort = () => {
     });
   };
 
+  const play = () => {
+    isPaused = !isPaused;
+    if (!timer.current) {
+      timer.current = setInterval(() => {
+        console.log(timer.current);
+        stepForward();
+      }, 200);
+    } else {
+      abortTimer(timer.current);
+      timer.current = null;
+    }
+  };
+
   function stepBackward() {
     setCurrentStep((prev) => {
       return prev > 0 ? prev - 1 : prev;
     });
+  }
+  function abortTimer() {
+    console.log(timer.current);
+    clearInterval(timer.current);
   }
 
   function bubbleSort() {
@@ -65,21 +71,12 @@ const Sort = () => {
           setTrace(() => {
             return t;
           });
-          setCurrentStep(t.length - 1);
+          //setCurrentStep(t.length - 1);
+
           console.log(t);
         }
       }
     }
-  }
-
-  function arraysAreEqual(arrayOne, arrayTwo) {
-    if (arrayOne.length !== arrayTwo.length) return false;
-    for (let i = 0; i < arrayOne.length; i++) {
-      if (arrayOne[i] !== arrayTwo[i]) {
-        return false;
-      }
-    }
-    return true;
   }
 
   return (
@@ -119,6 +116,24 @@ const Sort = () => {
           }}
         >
           +
+        </button>
+
+        <button
+          className="control-button step-next"
+          onClick={() => {
+            play();
+          }}
+        >
+          play
+        </button>
+
+        <button
+          className="control-button step-next"
+          onClick={() => {
+            abortTimer();
+          }}
+        >
+          pause
         </button>
       </div>
 
