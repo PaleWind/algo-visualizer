@@ -118,15 +118,18 @@
   position: fixed;
   display: flex;
   flex-direction: row;
+
+  align-items: center;
+  justify-content: center;
   /* align-items: center; */
-  background-color: rgb(251, 251, 251);
+  /* background-color: inherit; */
 }
 
 .sort-grid {
   margin-top: 3rem;
   width: auto;
-  margin-left: 2rem;
-  margin-right: 2rem;
+  /* margin-left: 2rem;
+  margin-right: 2rem; */
 }
 .sort-grid-bar {
   background-color: #f87171;
