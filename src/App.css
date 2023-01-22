@@ -150,3 +150,26 @@
   display: inline-block;
   margin: 0 8px;
 }
+
+.pathing-container {
+  margin-top: 4rem;
+  margin-left: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.path-graph {
+}
+
+.graph-node {
+  background-color: #f87171;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin: 2px;
+}
+.graph-node:hover {
+  transform: scale(1.1);
+}
