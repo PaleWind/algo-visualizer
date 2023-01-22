@@ -3,16 +3,25 @@ import { Link } from "react-router-dom";
 
 import "../App.css";
 
-import { BsPlus } from "react-icons/bs";
-import { FaFire, FaPoo } from "react-icons/fa";
+import { MdOutlineSort } from "react-icons/md";
+import { FaHome, FaMapMarkedAlt, FaPoo } from "react-icons/fa";
 import DarkMode from "../DarkMode";
 
 const Sidebar = () => {
   return (
     <div className="sidebar-container">
-      <SideBarIcon icon={<FaFire size="28" />} link="/" />
-      <SideBarIcon icon={<BsPlus size="32" />} link="/Sort" />
-      <SideBarIcon icon={<FaPoo size="20" />} link="/Visualizer2" />
+      <SideBarIcon icon={<FaHome size="32" />} link="/Home" text="Home" />
+      <SideBarIcon
+        icon={<FaMapMarkedAlt size="28" />}
+        link="/Pathing"
+        text="Pathing"
+      />
+      <SideBarIcon
+        icon={<MdOutlineSort size="32" />}
+        link="/Sort"
+        text="Sort"
+      />
+
       <SideBarIcon icon={<FaPoo size="20" />} />
       <DarkMode />
     </div>

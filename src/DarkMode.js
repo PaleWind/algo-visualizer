@@ -1,5 +1,6 @@
 import React from "react";
 import "./DarkMode.css";
+import { HiMoon } from "react-icons/hi";
 
 const DarkMode = () => {
   const storedTheme = localStorage.getItem("theme");
@@ -33,17 +34,34 @@ const DarkMode = () => {
   }
 
   return (
-    <div className="toggle-theme-wrapper">
-      <label className="toggle-theme" htmlFor="checkbox">
+    <div className="sidebar-icon">
+      <span className="sidebar-tooltip">Theme</span>
+      <label className="hide-input" htmlFor="checkbox">
+        {<HiMoon size="32" />}
         <input
           type="checkbox"
           id="checkbox"
           onChange={toggleTheme}
           defaultChecked={defaultDark}
         />
-        {/* <div className="slider round"></div> */}
+
+        {/* <div className="slider round">
+          
+        </div> */}
       </label>
     </div>
+
+    // <div className="toggle-theme-wrapper">
+    //   <label className="toggle-theme" htmlFor="checkbox">
+    //     <input
+    //       type="checkbox"
+    //       id="checkbox"
+    //       onChange={toggleTheme}
+    //       defaultChecked={defaultDark}
+    //     />
+    //     <div className="slider round"></div>
+    //   </label>
+    // </div>
   );
 };
 

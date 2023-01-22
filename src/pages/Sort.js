@@ -143,10 +143,6 @@ const Sort = () => {
   return (
     <>
       <div className="controls-container">
-        <div>controls</div>
-
-        {/* <svg className="control-button"></svg> */}
-
         <button
           className="control-button reset-array"
           onClick={() => resetTrace()}
@@ -164,22 +160,19 @@ const Sort = () => {
         <button
           className="control-button step-next"
           onClick={() => {
-            stepForward();
-          }}
-        >
-          +
-        </button>
-        <button
-          className="control-button step-next"
-          onClick={() => {
             play();
           }}
         >
           {isPaused ? "play" : "pause"}
         </button>
-        <p className="steps-counter">
-          Step: {currentStep + 1} / {trace.length}
-        </p>
+        <button
+          className="control-button step-next"
+          onClick={() => {
+            stepForward();
+          }}
+        >
+          +
+        </button>
         {/* 
         <button
           className="control-button sort-array"
@@ -190,7 +183,11 @@ const Sort = () => {
           merge sort
         </button> */}
       </div>
-
+      <div className="info-container">
+        <p className="steps-counter">
+          Step: {currentStep + 1} / {trace.length}
+        </p>
+      </div>
       <div className="visualizer-container">
         <div className="sort-grid">
           {trace.length

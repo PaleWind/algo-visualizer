@@ -38,6 +38,10 @@
   margin-top: auto;
 }
 
+.toggle-theme-wrapper:hover {
+  cursor: pointer;
+}
+
 .sidebar-tooltip {
   background-color: rgb(156 163 175);
   color: rgb(255, 255, 255);
@@ -71,22 +75,24 @@
 
 .controls-container {
   margin-left: 4rem;
-  background-color: rgb(51, 71, 111);
+  background-color: rgb(132, 192, 216);
+  /* opacity: 0.8; */
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   position: fixed;
   top: 0px;
   width: 100vw;
   height: 5rem;
 }
-
+.steps-counter {
+  display: flex;
+  align-items: center;
+}
 .control-button {
+  border: none;
   background-color: #9ca3af;
-  /* align-items: center; */
-  /* width: auto; */
-  /* position: relative; */
-  /* display: flex; */
-  /* justify-content: center; */
   height: 3rem;
   width: 3rem;
   margin-top: 0.5rem;
@@ -110,15 +116,25 @@
   height: 5rem;
 }
 
-.visualizer-container {
-  height: 75vh;
+.info-container {
+  top: 0;
+  height: auto;
   width: 100vw;
   margin-left: 4rem;
-  margin-top: 5rem;
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.visualizer-container {
+  top: 0;
+  height: 50vh;
+  width: 100vw;
+  margin-left: 4rem;
+  margin-top: 6rem;
   position: fixed;
   display: flex;
   flex-direction: row;
-
   align-items: center;
   justify-content: center;
   /* align-items: center; */
@@ -138,7 +154,7 @@
   margin: 0 8px;
 }
 /* scroll bar */
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
   width: 0.3rem;
 }
 body::-webkit-scrollbar-track {
@@ -146,4 +162,4 @@ body::-webkit-scrollbar-track {
 }
 body::-webkit-scrollbar-thumb {
   background: #6144af;
-}
+} */
