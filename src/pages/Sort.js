@@ -5,16 +5,35 @@ const Sort = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [trace, setTrace] = useState([]);
   const [colorTrace, setColorTrace] = useState([]);
-  const timer = useRef(0);
+  const [isPaused, setPaused] = useState(true);
+
+  const [speed, setSpeed] = useState(200);
+  const sliderMax = 200;
   let t = [];
-  let isPaused = true;
 
   useEffect(() => {
     resetTrace();
   }, []);
+  useEffect(() => {
+    console.log(speed);
+  }, [speed]);
+
+  useEffect(() => {
+    let time = 0;
+    if (!isPaused) {
+      time = setInterval(() => {
+        setCurrentStep((prev) => {
+          return prev < trace.length - 1 ? prev + 1 : prev;
+        });
+      }, 201 - speed);
+    }
+    return () => {
+      clearInterval(time);
+    };
+  }, [isPaused]);
 
   function resetTrace() {
-    pause();
+    setPaused((prev) => true);
     setCurrentStep(0);
     setTrace(() => {
       let p = [];
@@ -47,32 +66,23 @@ const Sort = () => {
   }
 
   const stepForward = () => {
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
     setCurrentStep((prev) => {
       return prev < trace.length - 1 ? prev + 1 : prev;
     });
   };
 
   function stepBackward() {
-    pause();
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
     setCurrentStep((prev) => {
       return prev > 0 ? prev - 1 : prev;
     });
-  }
-  const play = () => {
-    isPaused = !isPaused;
-    console.log(isPaused);
-    if (!timer.current) {
-      timer.current = setInterval(() => {
-        stepForward();
-      }, 100);
-    } else {
-      pause(timer.current);
-      timer.current = null;
-    }
-  };
-
-  function pause() {
-    clearInterval(timer.current);
   }
 
   function bubbleSort(array) {
@@ -158,9 +168,9 @@ const Sort = () => {
           -
         </button>
         <button
-          className="control-button step-next"
+          className="control-button play"
           onClick={() => {
-            play();
+            setPaused((prev) => !prev);
           }}
         >
           {isPaused ? "play" : "pause"}
@@ -173,6 +183,16 @@ const Sort = () => {
         >
           +
         </button>
+        <input
+          className="slider-input"
+          type="range"
+          min="1"
+          max={sliderMax}
+          onChange={(e) => {
+            setSpeed(e.target.value);
+          }}
+          value={speed}
+        />
         {/* 
         <button
           className="control-button sort-array"
