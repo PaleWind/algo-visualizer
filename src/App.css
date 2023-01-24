@@ -112,6 +112,10 @@
   border-radius: 0.75rem;
   cursor: pointer;
 }
+.control-button:disabled {
+  background-color: rgb(84, 84, 84);
+  color: #f87171;
+}
 
 .svg-text {
   height: 5rem;
@@ -127,6 +131,10 @@
   flex-direction: row;
   justify-content: center;
 }
+.info {
+  margin-left: 1rem;
+}
+
 .visualizer-container {
   top: 0;
   height: 50vh;

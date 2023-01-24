@@ -189,7 +189,7 @@ const Sort = () => {
           min="1"
           max={sliderMax}
           onChange={(e) => {
-            setSpeed(e.target.value);
+            setSpeed(() => e.target.value);
           }}
           value={speed}
         />
