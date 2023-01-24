@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+
 import "../App.css";
 import "./pathing.css";
 
@@ -10,16 +11,36 @@ const Pathing = () => {
   const [graph, setGraph] = useState(() => generateGraph());
   const [trace, setTrace] = useState(() => []);
   const [currentStep, setCurrentStep] = useState(() => 0);
-  let tr = [];
-  let t = [];
+  let tr = useRef([]);
+  let tempGraph = useRef([]);
   let targetFound = useRef(false);
+  const [isPaused, setPaused] = useState(true);
+
+  useEffect(() => {
+    let time = 0;
+    if (!isPaused) {
+      time = setInterval(() => {
+        setCurrentStep((prev) => {
+          return prev < trace.length ? prev + 1 : prev;
+        });
+      }, 201);
+    }
+    return () => {
+      clearInterval(time);
+    };
+  }, [isPaused, trace.length]);
 
   useEffect(() => {
     console.log("graph render ->");
+    targetFound.current = false;
     setTrace(() => []);
     setCurrentStep(() => 0);
-    tr = [];
-    t = [];
+    tr.current = [];
+    tempGraph.current = graph.map((row, i) => {
+      return row.map((col, j) => {
+        return col;
+      });
+    });
   }, [graph]);
 
   function generateGraph() {
@@ -35,6 +56,7 @@ const Pathing = () => {
   }
 
   function setNode(row, col) {
+    setCurrentStep(0);
     if (
       startNode.current.length === 0 ||
       (startNode.current.length > 0 && targetNode.current.length > 0)
@@ -60,12 +82,20 @@ const Pathing = () => {
   }
 
   const stepForward = () => {
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
     setCurrentStep((prev) => {
       return prev < trace.length ? prev + 1 : prev;
     });
   };
 
   function stepBackward() {
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
     setCurrentStep((prev) => {
       return prev > 0 ? prev - 1 : prev;
     });
@@ -76,17 +106,19 @@ const Pathing = () => {
       setTrace([...trace, graph]);
     }
 
-    t = graph.map((row, i) => {
+    tempGraph.current = graph.map((row, i) => {
       return row.map((col, j) => {
         return col;
       });
     });
+    console.log(startNode.current);
     dfs(startNode.current);
-    console.log(tr);
-    setTrace(() => tr);
+    // console.log(tr.current);
+    setTrace(() => tr.current);
   }
 
   function dfs(start) {
+    console.log(start);
     //base cases
     if (
       !start ||
@@ -94,19 +126,19 @@ const Pathing = () => {
       start[1] < 0 ||
       start[0] >= rows ||
       start[1] >= cols ||
-      t[start[0]][start[1]] === 1 ||
+      tempGraph.current[start[0]][start[1]] === 1 ||
       targetFound.current
     ) {
       return;
     }
-    if (t[start[0]][start[1]] === 2) {
+    if (tempGraph.current[start[0]][start[1]] === 2) {
       targetFound.current = true;
       return;
     }
 
-    if (t[start[0]][start[1]] === 0) {
+    if (tempGraph.current[start[0]][start[1]] === 0) {
       //t[start[0]][start[1]] = 1;
-      t = t.map((row, i) => {
+      tempGraph.current = tempGraph.current.map((row, i) => {
         return row.map((col, j) => {
           if (start[0] === i && start[1] === j) {
             return 1;
@@ -114,7 +146,7 @@ const Pathing = () => {
           return col;
         });
       });
-      tr.push(t);
+      tr.current.push(tempGraph.current);
     }
 
     // //traverse
@@ -129,7 +161,11 @@ const Pathing = () => {
       <div className="controls-container">
         <button
           className="control-button reset-graph"
-          onClick={() => setGraph(() => generateGraph())}
+          onClick={() => {
+            startNode.current = [];
+            targetNode.current = [];
+            setGraph(() => generateGraph());
+          }}
         >
           Reset
         </button>
@@ -145,23 +181,39 @@ const Pathing = () => {
           Go!
         </button>
 
-        <button
-          className="control-button step-back"
-          onClick={() => {
-            stepBackward();
-          }}
-        >
-          -
-        </button>
-
-        <button
-          className="control-button step-next"
-          onClick={() => {
-            stepForward();
-          }}
-        >
-          +
-        </button>
+        {trace.length > 0 ? (
+          <>
+            <button
+              className="control-button step-back"
+              disabled={!trace.length > 0}
+              onClick={() => {
+                stepBackward();
+              }}
+            >
+              -
+            </button>
+            <button
+              className="control-button play"
+              disabled={!trace.length > 0}
+              onClick={() => {
+                setPaused((prev) => !prev);
+              }}
+            >
+              {isPaused ? "play" : "pause"}
+            </button>
+            <button
+              className="control-button step-next"
+              disabled={!trace.length > 0}
+              onClick={() => {
+                stepForward();
+              }}
+            >
+              +
+            </button>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
 
       <div className="info-container">
