@@ -48,7 +48,7 @@ const Pathing = () => {
       return prev.map((row, i) => {
         return prev.map((col, j) => {
           if (startNode.current[0] === i && startNode.current[1] === j) {
-            return 0;
+            return 3;
           }
           if (targetNode.current[0] === i && targetNode.current[1] === j) {
             return 2;
@@ -56,6 +56,18 @@ const Pathing = () => {
           return 0;
         });
       });
+    });
+  }
+
+  const stepForward = () => {
+    setCurrentStep((prev) => {
+      return prev < trace.length ? prev + 1 : prev;
+    });
+  };
+
+  function stepBackward() {
+    setCurrentStep((prev) => {
+      return prev > 0 ? prev - 1 : prev;
     });
   }
 
@@ -69,8 +81,8 @@ const Pathing = () => {
         return col;
       });
     });
-    console.log(t);
     dfs(startNode.current);
+    console.log(tr);
     setTrace(() => tr);
   }
 
@@ -104,8 +116,6 @@ const Pathing = () => {
       });
       tr.push(t);
     }
-    // trace.current.push(t);
-    //console.log(trace);
 
     // //traverse
     dfs([start[0] - 1, start[1]]);
@@ -136,8 +146,19 @@ const Pathing = () => {
         </button>
 
         <button
-          className="control-button"
-          onClick={() => setCurrentStep((prev) => prev + 1)}
+          className="control-button step-back"
+          onClick={() => {
+            stepBackward();
+          }}
+        >
+          -
+        </button>
+
+        <button
+          className="control-button step-next"
+          onClick={() => {
+            stepForward();
+          }}
         >
           +
         </button>
@@ -148,12 +169,13 @@ const Pathing = () => {
           <i>Select a start node</i>
         ) : !targetNode.current.length > 0 ? (
           <i>Select a target node</i>
-        ) : (
+        ) : trace.length === 0 ? (
           <i>Hit go!</i>
+        ) : (
+          <i className="info">
+            step {currentStep} / {trace.length}
+          </i>
         )}
-        <i className="info">
-          step {currentStep} / {trace.length}
-        </i>
       </div>
 
       <div className="pathing-container">
@@ -174,7 +196,7 @@ const Pathing = () => {
                   </div>
                 );
               })
-            : trace[currentStep].map((row, rowi) => {
+            : trace[currentStep - 1].map((row, rowi) => {
                 return (
                   <div key={rowi}>
                     {row.map((col, coli) => {
