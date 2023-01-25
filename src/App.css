@@ -75,7 +75,7 @@
 
 .controls-container {
   margin-left: 4rem;
-  background-color: rgb(132, 192, 216);
+  background-color: rgb(108, 185, 215);
   /* opacity: 0.8; */
   display: flex;
   flex-direction: row;
@@ -116,6 +116,15 @@
   background-color: rgb(84, 84, 84);
   color: #f87171;
 }
+.control-dropdown {
+  border: none;
+  background-color: #9ca3af;
+  height: 3rem;
+  width: auto;
+  margin-left: 0.5rem;
+  color: #ffffff;
+  border-radius: 1rem;
+}
 
 .svg-text {
   height: 5rem;
@@ -133,6 +142,10 @@
 }
 .info {
   margin-left: 1rem;
+}
+.info-text {
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
 .visualizer-container {
@@ -180,4 +193,8 @@
 }
 .graph-node:hover {
   transform: scale(1.1);
+}
+
+#title {
+  font-size: large;
 }

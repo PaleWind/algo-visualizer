@@ -15,6 +15,11 @@ const Pathing = () => {
   let tempGraph = useRef([]);
   let targetFound = useRef(false);
   const [isPaused, setPaused] = useState(true);
+  const [cururentAlgo, setCururentAlgo] = useState("DFS");
+  let bfsQ = useRef([]);
+
+  const [speed, setSpeed] = useState(200);
+  const sliderMax = 200;
 
   useEffect(() => {
     let time = 0;
@@ -23,24 +28,30 @@ const Pathing = () => {
         setCurrentStep((prev) => {
           return prev < trace.length ? prev + 1 : prev;
         });
-      }, 201);
+      }, 201 - speed);
     }
     return () => {
       clearInterval(time);
     };
-  }, [isPaused, trace.length]);
+  }, [isPaused, trace.length, speed]);
 
   useEffect(() => {
     console.log("graph render ->");
+
+    setPaused(() => true);
     targetFound.current = false;
     setTrace(() => []);
     setCurrentStep(() => 0);
     tr.current = [];
+    bfsQ.current = [];
     tempGraph.current = graph.map((row, i) => {
       return row.map((col, j) => {
         return col;
       });
     });
+    // if (startNode.current.length > 0 && targetNode.current.length > 0) {
+    //   findPath();
+    // }
   }, [graph]);
 
   function generateGraph() {
@@ -111,14 +122,45 @@ const Pathing = () => {
         return col;
       });
     });
-    console.log(startNode.current);
-    dfs(startNode.current);
-    // console.log(tr.current);
+
+    if (cururentAlgo === "DFS") {
+      dfs(startNode.current);
+    } else if (cururentAlgo === "BFS") {
+      bfsQ.current.push(startNode.current);
+      while (bfsQ.current.length > 0) {
+        bfs();
+      }
+    }
     setTrace(() => tr.current);
   }
 
+  function bfs() {
+    let node = bfsQ.current.shift();
+    if (targetFound.current || tempGraph.current[node[0]][node[1]] === 1) {
+      return;
+    }
+    if (tempGraph.current[node[0]][node[1]] === 2) {
+      targetFound.current = true;
+    }
+
+    if (tempGraph.current[node[0]][node[1]] === 0) {
+      tempGraph.current = tempGraph.current.map((row, i) => {
+        return row.map((col, j) => {
+          if (node[0] === i && node[1] === j) {
+            return 1;
+          }
+          return col;
+        });
+      });
+      tr.current.push(tempGraph.current);
+    }
+    if (node[0] + 1 < rows) bfsQ.current.push([node[0] + 1, node[1]]);
+    if (node[0] - 1 >= 0) bfsQ.current.push([node[0] - 1, node[1]]);
+    if (node[1] + 1 < rows) bfsQ.current.push([node[0], node[1] + 1]);
+    if (node[1] - 1 >= 0) bfsQ.current.push([node[0], node[1] - 1]);
+  }
+
   function dfs(start) {
-    console.log(start);
     //base cases
     if (
       !start ||
@@ -159,6 +201,20 @@ const Pathing = () => {
   return (
     <>
       <div className="controls-container">
+        <select
+          className="control-button"
+          onChange={(e) => {
+            setCururentAlgo(e.target.value);
+            setGraph(() => generateGraph());
+          }}
+          name="Algorithm"
+          id="selected-algo"
+        >
+          <option value="DFS">DFS</option>
+          <option value="BFS">BFS</option>
+          {/* <option value="A*">A*</option>
+          <option value="Daijkstra">Daijkstra</option> */}
+        </select>
         <button
           className="control-button reset-graph"
           onClick={() => {
@@ -169,6 +225,7 @@ const Pathing = () => {
         >
           Reset
         </button>
+
         <button
           className="control-button traverse-graph"
           onClick={() => {
@@ -210,6 +267,16 @@ const Pathing = () => {
             >
               +
             </button>
+            <input
+              className="slider-input"
+              type="range"
+              min="1"
+              max={sliderMax}
+              onChange={(e) => {
+                setSpeed(() => e.target.value);
+              }}
+              value={speed}
+            />
           </>
         ) : (
           <></>

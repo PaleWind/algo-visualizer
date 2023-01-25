@@ -14,7 +14,7 @@ const Sidebar = () => {
       <SideBarIcon
         icon={<FaMapMarkedAlt size="28" />}
         link="/Pathing"
-        text="Pathing"
+        text="Graph"
       />
       <SideBarIcon
         icon={<MdOutlineSort size="32" />}
