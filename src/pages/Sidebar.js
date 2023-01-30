@@ -24,11 +24,11 @@ const Sidebar = () => {
         text="Sort"
       />
 
-      <SideBarIcon
+      {/* <SideBarIcon
         icon={<SiGraphql size="20" />}
         link="/GraphQL"
         text="GraphQL"
-      />
+      /> */}
       <SideBarIcon icon={<FaBrain size="20" />} link="/SelfDriving" text="AI" />
       <DarkMode />
     </div>

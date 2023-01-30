@@ -23,7 +23,7 @@
 }
 
 .graph-node {
-  background-color: #f87171;
+  /* background-color: #f87171; */
   width: 25px;
   height: 25px;
   display: inline-block;
