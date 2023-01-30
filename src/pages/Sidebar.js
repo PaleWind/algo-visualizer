@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import "../App.css";
+import "../Styles/App.css";
+import "../Styles/Sidebar.css";
 
 import { MdOutlineSort } from "react-icons/md";
-import { FaHome, FaMapMarkedAlt, FaPoo } from "react-icons/fa";
+import { FaHome, FaMapMarkedAlt, FaBrain } from "react-icons/fa";
+import { SiGraphql } from "react-icons/si";
 import DarkMode from "../DarkMode";
 
 const Sidebar = () => {
@@ -22,7 +24,12 @@ const Sidebar = () => {
         text="Sort"
       />
 
-      <SideBarIcon icon={<FaPoo size="20" />} />
+      <SideBarIcon
+        icon={<SiGraphql size="20" />}
+        link="/GraphQL"
+        text="GraphQL"
+      />
+      <SideBarIcon icon={<FaBrain size="20" />} link="/SelfDriving" text="AI" />
       <DarkMode />
     </div>
   );

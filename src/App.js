@@ -2,8 +2,10 @@ import Sidebar from "./pages/Sidebar";
 import Home from "./pages/Home";
 import Sort from "./pages/Sort";
 import Pathing from "./pages/Pathing";
-import { redirect, Route, Routes } from "react-router-dom";
-import "./App.css";
+import GraphQL from "./pages/GraphQL";
+import SelfDriving from "./pages/SelfDriving";
+import { Route, Routes } from "react-router-dom";
+import "./Styles/App.css";
 
 function App() {
   return (
@@ -13,6 +15,8 @@ function App() {
         <Route path="/Home" element={<Home />} />
         <Route path="/sort" element={<Sort />} />
         <Route path="/Pathing" element={<Pathing />} />
+        <Route path="/GraphQL" element={<GraphQL />} />
+        <Route path="/SelfDriving" element={<SelfDriving />} />
       </Routes>
       <Sidebar />
     </div>

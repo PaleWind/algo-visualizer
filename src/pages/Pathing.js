@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import "../App.css";
-import "./pathing.css";
+import "../Styles/App.css";
+import "../Styles/pathing.css";
 
 const Pathing = () => {
   const rows = 15;
@@ -199,7 +199,9 @@ const Pathing = () => {
   }
 
   return (
-    <>
+    <div className="grid-container">
+      <div className="title-container">Sorting Visualizer</div>
+
       <div className="controls-container">
         <select
           className="control-button"
@@ -332,7 +334,7 @@ const Pathing = () => {
               })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

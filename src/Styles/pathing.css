@@ -1,0 +1,34 @@
+.node-val-0 {
+  background-color: lightcoral;
+}
+
+.node-val-1 {
+  background-color: burlywood;
+}
+
+.node-val-2 {
+  background-color: rgb(255, 225, 56);
+}
+
+.node-val-3 {
+  background-color: lightblue;
+}
+
+.pathing-container {
+  margin-left: 4rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.graph-node {
+  background-color: #f87171;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin: 2px;
+}
+.graph-node:hover {
+  transform: scale(1.1);
+}

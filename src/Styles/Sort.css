@@ -1,0 +1,10 @@
+.sort-grid {
+  margin-top: 3rem;
+  width: auto;
+}
+.sort-grid-bar {
+  background-color: #f87171;
+  width: 5px;
+  display: inline-block;
+  margin: 0 8px;
+}
