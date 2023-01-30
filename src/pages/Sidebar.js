@@ -15,7 +15,7 @@ const Sidebar = () => {
       <SideBarIcon icon={<FaHome size="32" />} link="/Home" text="Home" />
       <SideBarIcon
         icon={<FaMapMarkedAlt size="28" />}
-        link="/Pathing"
+        link="/Pathing2"
         text="Graph"
       />
       <SideBarIcon

@@ -93,7 +93,7 @@ const Pathing2 = () => {
   return (
     <div className="grid-container">
       <div className="title-container">
-        <i id="title">Sorting Visualizer</i>
+        <i id="title">Graph Traversal Visualizer</i>
       </div>
       <div className="controls-container">
         <i>
