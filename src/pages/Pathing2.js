@@ -47,43 +47,45 @@ const Pathing2 = () => {
       searchGraph = generateGraph([startNode[0], startNode[1]], [row, col]);
       tempTrace = [];
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
-      dfs(startNode[0], startNode[1]);
+      dfs(startNode);
       setTrace(tempTrace);
     }
   };
 
   function findPath() {}
 
-  function dfs(i, j) {
+  function dfs(node) {
     //base cases
     if (
-      !i ||
-      !j ||
-      i < 0 ||
-      j < 0 ||
-      i >= rows ||
-      j >= cols ||
-      searchGraph[i][j] === 1 ||
+      !node ||
+      node[0] < 0 ||
+      node[1] < 0 ||
+      node[0] >= rows ||
+      node[1] >= cols ||
+      searchGraph[node[0]][node[1]] === 1 ||
       targetFound
     ) {
+      console.log("out of bounds");
       return;
     }
-    if (searchGraph[i][j] === 2) {
+    if (searchGraph[node[0]][node[1]] === 2) {
       targetFound = true;
+      console.log("found a 2");
       return;
     }
 
-    if (searchGraph[i][j] === 0) {
-      searchGraph[i][j] = 1;
+    if (searchGraph[node[0]][node[1]] === 0) {
+      console.log("flipping a 0");
+      searchGraph[node[0]][node[1]] = 1;
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
-      console.log(tempTrace);
+      // console.log(tempTrace);
     }
 
     // //traverse
-    dfs(i - 1, j);
-    dfs(i + 1, j);
-    dfs(i, j - 1);
-    dfs(i, j + 1);
+    dfs([node[0] - 1, node[1]]);
+    dfs([node[0] + 1, node[1]]);
+    dfs([node[0], node[1] - 1]);
+    dfs([node[0], node[1] + 1]);
   }
 
   let steps = trace.length - 1;
