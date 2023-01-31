@@ -7,9 +7,28 @@ const Pathing2 = () => {
   const [targetNode, setTargetNode] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [trace, setTrace] = useState(() => [generateGraph()]);
+  const [isPaused, setPaused] = useState(true);
+  const [speed, setSpeed] = useState(200);
+  let currentAlgo = useRef(0);
+
+  let algos = [dfs, bfs];
   let searchGraph = [];
   let tempTrace = [];
   let targetFound = false;
+
+  useEffect(() => {
+    let time = 0;
+    if (!isPaused) {
+      time = setInterval(() => {
+        setCurrentStep((prev) => {
+          return prev < trace.length ? prev + 1 : prev;
+        });
+      }, 201 - speed);
+    }
+    return () => {
+      clearInterval(time);
+    };
+  }, [isPaused, trace.length, speed]);
 
   function generateGraph(start = [], target = []) {
     let newGraph = [];
@@ -30,6 +49,7 @@ const Pathing2 = () => {
   }
 
   const setNode = (row, col) => {
+    setCurrentStep(0);
     if (
       startNode.length === 0 ||
       (startNode.length > 0 && targetNode.length > 0)
@@ -39,21 +59,41 @@ const Pathing2 = () => {
       setTrace([generateGraph([row, col], [])]);
     } else if (
       targetNode.length === 0 &&
-      startNode.length > 0
-      // startNode[0] !== row &&
-      // startNode[1] !== col
+      startNode.length > 0 &&
+      !compareArrays(startNode, [row, col])
     ) {
       setTargetNode([row, col]);
       searchGraph = generateGraph([startNode[0], startNode[1]], [row, col]);
       tempTrace = [];
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
-      //dfs(startNode);
-      bfs(startNode);
+      findPath();
       setTrace(tempTrace);
     }
   };
 
-  function findPath() {}
+  const stepForward = () => {
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
+    setCurrentStep((prev) => {
+      return prev < trace.length - 1 ? prev + 1 : prev;
+    });
+  };
+
+  function stepBackward() {
+    if (!isPaused) {
+      setPaused(() => true);
+      return;
+    }
+    setCurrentStep((prev) => {
+      return prev > 0 ? prev - 1 : prev;
+    });
+  }
+
+  function findPath() {
+    algos[currentAlgo.current](startNode);
+  }
 
   function bfs(startNode) {
     let q = [];
@@ -61,22 +101,20 @@ const Pathing2 = () => {
     console.log(q);
     while (q.length > 0) {
       let node = q.shift();
-      if (targetFound || searchGraph[node[0]][node[1]] === 1) {
-        return;
-      }
       if (searchGraph[node[0]][node[1]] === 2) {
         searchGraph = true;
+        return;
       }
-
       if (searchGraph[node[0]][node[1]] === 0) {
-        console.log("flipping a 0");
         searchGraph[node[0]][node[1]] = 1;
         tempTrace.push(searchGraph.map((inner) => inner.slice()));
       }
-      if (node[0] + 1 < rows) q.push([node[0] + 1, node[1]]);
-      if (node[0] - 1 >= 0) q.push([node[0] - 1, node[1]]);
-      if (node[1] + 1 < rows) q.push([node[0], node[1] + 1]);
-      if (node[1] - 1 >= 0) q.push([node[0], node[1] - 1]);
+      if (node[0] + 1 < rows && node[0] + 1 !== 1)
+        q.push([node[0] + 1, node[1]]);
+      if (node[0] - 1 >= 0 && node[0] - 1 !== 1) q.push([node[0] - 1, node[1]]);
+      if (node[1] + 1 < rows && node[1] + 1 !== 1)
+        q.push([node[0], node[1] + 1]);
+      if (node[1] - 1 >= 0 && node[1] - 1 !== 1) q.push([node[0], node[1] - 1]);
     }
   }
 
@@ -91,20 +129,16 @@ const Pathing2 = () => {
       searchGraph[node[0]][node[1]] === 1 ||
       targetFound
     ) {
-      console.log("out of bounds");
       return;
     }
     if (searchGraph[node[0]][node[1]] === 2) {
       targetFound = true;
-      console.log("found a 2");
       return;
     }
 
     if (searchGraph[node[0]][node[1]] === 0) {
-      console.log("flipping a 0");
       searchGraph[node[0]][node[1]] = 1;
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
-      // console.log(tempTrace);
     }
 
     // //traverse
@@ -114,6 +148,10 @@ const Pathing2 = () => {
     dfs([node[0], node[1] + 1]);
   }
 
+  const compareArrays = (a, b) => {
+    return a.toString() === b.toString();
+  };
+
   let steps = trace.length - 1;
   let graph = trace[currentStep];
   return (
@@ -122,6 +160,37 @@ const Pathing2 = () => {
         <i id="title">Graph Traversal Visualizer</i>
       </div>
       <div className="controls-container">
+        <select
+          className="control-button"
+          onChange={(e) => {
+            currentAlgo.current = e.target.value;
+          }}
+          name="Algorithm"
+          id="selected-algo"
+        >
+          <option value={0}>DFS</option>
+          <option value={1}>BFS</option>
+          {/* <option value="A*">A*</option>
+          <option value="Daijkstra">Daijkstra</option> */}
+        </select>
+        <button
+          className="control-button"
+          disabled={!trace.length > 0}
+          onClick={() => {
+            stepBackward();
+          }}
+        >
+          -
+        </button>
+        <button
+          className="control-button"
+          disabled={!trace.length > 0}
+          onClick={() => {
+            stepForward();
+          }}
+        >
+          +
+        </button>
         <i>
           start: {startNode[0]}, {startNode[1]}
           {""}
