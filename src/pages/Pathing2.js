@@ -47,12 +47,38 @@ const Pathing2 = () => {
       searchGraph = generateGraph([startNode[0], startNode[1]], [row, col]);
       tempTrace = [];
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
-      dfs(startNode);
+      //dfs(startNode);
+      bfs(startNode);
       setTrace(tempTrace);
     }
   };
 
   function findPath() {}
+
+  function bfs(startNode) {
+    let q = [];
+    q.push(startNode);
+    console.log(q);
+    while (q.length > 0) {
+      let node = q.shift();
+      if (targetFound || searchGraph[node[0]][node[1]] === 1) {
+        return;
+      }
+      if (searchGraph[node[0]][node[1]] === 2) {
+        searchGraph = true;
+      }
+
+      if (searchGraph[node[0]][node[1]] === 0) {
+        console.log("flipping a 0");
+        searchGraph[node[0]][node[1]] = 1;
+        tempTrace.push(searchGraph.map((inner) => inner.slice()));
+      }
+      if (node[0] + 1 < rows) q.push([node[0] + 1, node[1]]);
+      if (node[0] - 1 >= 0) q.push([node[0] - 1, node[1]]);
+      if (node[1] + 1 < rows) q.push([node[0], node[1] + 1]);
+      if (node[1] - 1 >= 0) q.push([node[0], node[1] - 1]);
+    }
+  }
 
   function dfs(node) {
     //base cases
