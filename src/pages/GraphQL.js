@@ -1,25 +1,47 @@
 import React, { useEffect, useState, useRef } from "react";
 
 const GraphQL = () => {
-  const [var1, setVar1] = useState(0);
-  const [var2, setVar2] = useState(0);
-  const [var3, setVar3] = useState(0);
-
+  const [trace, setTrace] = useState([]);
+  let tempTrace = [];
+  let searchGraph = [];
   const renderCount = useRef(0);
+  let c = 0;
 
   useEffect(() => {
     renderCount.current += 1;
   });
 
-  function handleClick() {
-    setVar3((prev) => prev + 1);
+  function updateArray() {
+    tempTrace = [];
+    searchGraph = [[4], [2], [3], [1]];
+    tempTrace.push([...searchGraph]);
+    // for (let i = 0; i < 6; i++) {
+    //   searchGraph[0] = i;
+    //   tempTrace.push([...searchGraph]);
+    // }
+    dfs();
+    setTrace(tempTrace);
   }
+
+  function dfs() {
+    if (c < 6) {
+      c += 1;
+      searchGraph[0] = c;
+      tempTrace.push([...searchGraph]);
+      dfs();
+    }
+  }
+
   return (
     <div style={{ marginLeft: "4rem" }}>
       <i>render count: {renderCount.current}</i>
-      <button onClick={() => setVar1(var1 + 1)}>var1</button>
-      <button onClick={() => setVar2(() => var2 + 1)}>var2</button>
-      <button onClick={() => handleClick()}>var3 {var3}</button>
+
+      <button onClick={() => updateArray()}>update array</button>
+      <i>
+        {trace.map((v, i) => {
+          return <div key={i}>{v}</div>;
+        })}
+      </i>
     </div>
   );
 };

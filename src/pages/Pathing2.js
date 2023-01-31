@@ -17,11 +17,11 @@ const Pathing2 = () => {
       let row = [];
       for (let j = 0; j < cols; j++) {
         if (start.length > 0 && start[0] === i && start[1] === j) {
-          row.push([3]);
+          row.push(3);
         } else if (target.length > 0 && target[0] === i && target[1] === j) {
-          row.push([2]);
+          row.push(2);
         } else {
-          row.push([0]);
+          row.push(0);
         }
       }
       newGraph.push(row);
@@ -29,7 +29,7 @@ const Pathing2 = () => {
     return newGraph;
   }
 
-  function setNode(row, col) {
+  const setNode = (row, col) => {
     if (
       startNode.length === 0 ||
       (startNode.length > 0 && targetNode.length > 0)
@@ -46,46 +46,44 @@ const Pathing2 = () => {
       setTargetNode([row, col]);
       searchGraph = generateGraph([startNode[0], startNode[1]], [row, col]);
       tempTrace = [];
-      tempTrace.push(searchGraph);
-      //setTrace([generateGraph([startNode[0], startNode[1]], [row, col])]);
-      dfs(startNode);
-
+      tempTrace.push(searchGraph.map((inner) => inner.slice()));
+      dfs(startNode[0], startNode[1]);
       setTrace(tempTrace);
     }
-  }
+  };
 
   function findPath() {}
 
-  function dfs(node) {
-    const { i, j } = node;
+  function dfs(i, j) {
     //base cases
     if (
-      !node ||
-      node[0] < 0 ||
-      node[1] < 0 ||
-      node[0] >= rows ||
-      node[1] >= cols ||
-      searchGraph[node[0]][node[1]][0] === 1 ||
+      !i ||
+      !j ||
+      i < 0 ||
+      j < 0 ||
+      i >= rows ||
+      j >= cols ||
+      searchGraph[i][j] === 1 ||
       targetFound
     ) {
       return;
     }
-    console.log(searchGraph[node[0]][node[1]]);
-    if (searchGraph[node[0]][node[1]][0] === 2) {
+    if (searchGraph[i][j] === 2) {
       targetFound = true;
       return;
     }
 
-    if (searchGraph[node[0]][node[1]][0] === 0) {
-      searchGraph[node[0]][node[1]][0] = 1;
-      tempTrace.push(searchGraph);
+    if (searchGraph[i][j] === 0) {
+      searchGraph[i][j] = 1;
+      tempTrace.push(searchGraph.map((inner) => inner.slice()));
+      console.log(tempTrace);
     }
 
     // //traverse
-    dfs([node[0] - 1, node[1]]);
-    dfs([node[0] + 1, node[1]]);
-    dfs([node[0], node[1] - 1]);
-    dfs([node[0], node[1] + 1]);
+    dfs(i - 1, j);
+    dfs(i + 1, j);
+    dfs(i, j - 1);
+    dfs(i, j + 1);
   }
 
   let steps = trace.length - 1;
