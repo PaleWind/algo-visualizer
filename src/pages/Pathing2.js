@@ -8,7 +8,7 @@ const Pathing2 = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [trace, setTrace] = useState(() => [generateGraph()]);
   const [isPaused, setPaused] = useState(true);
-  const [speed, setSpeed] = useState(200);
+  const [speed, setSpeed] = useState(100);
   let currentAlgo = useRef(0);
 
   let algos = [dfs, bfs];
@@ -21,7 +21,7 @@ const Pathing2 = () => {
     if (!isPaused) {
       time = setInterval(() => {
         setCurrentStep((prev) => {
-          return prev < trace.length ? prev + 1 : prev;
+          return prev < trace.length - 1 ? prev + 1 : prev;
         });
       }, 201 - speed);
     }
@@ -181,6 +181,15 @@ const Pathing2 = () => {
           }}
         >
           -
+        </button>
+        <button
+          className="control-button play"
+          disabled={!trace.length > 0}
+          onClick={() => {
+            setPaused((prev) => !prev);
+          }}
+        >
+          {isPaused ? "play" : "pause"}
         </button>
         <button
           className="control-button"
