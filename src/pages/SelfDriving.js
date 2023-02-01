@@ -13,16 +13,19 @@ const SelfDriving = () => {
   const carCanvasRef = useRef(null);
   const networkCanvasRef = useRef(null);
   const carCanvasWidth = 200;
+  const numOfCars = useRef(100);
+  const numOfTraffic = useRef(1);
 
   const road = new Road(carCanvasWidth / 2, carCanvasWidth * 0.9);
 
-  const traffic = [
-    new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
-    //new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
-    //new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
-  ];
+  let traffic = generateTraffic(numOfTraffic);
+  // let traffic = [
+  //   new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
+  //   //new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
+  //   //new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
+  // ];
 
-  const cars = generateCars(100);
+  let cars = generateCars(numOfCars.current);
   let bestCar = cars[0];
   if (localStorage.getItem("bestBrain")) {
     for (let i = 0; i < cars.length; i++) {
@@ -41,6 +44,16 @@ const SelfDriving = () => {
     return cars;
   }
 
+  function generateTraffic(n) {
+    let traffic = [];
+    // for (let i = 0; i < n; i++) {
+    traffic.push(new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2));
+    traffic.push(new Car(road.getLaneCenter(0), -600, 30, 50, "DUMMY", 2));
+    traffic.push(new Car(road.getLaneCenter(2), -600, 30, 50, "DUMMY", 2));
+    // }
+    return traffic;
+  }
+
   function save() {
     localStorage.setItem("bestBrain", JSON.stringify(bestCar.brain));
   }
@@ -49,7 +62,10 @@ const SelfDriving = () => {
     localStorage.clear("bestBrain");
   }
 
-  function reset() {}
+  function resetCars() {
+    cars = generateCars(numOfCars.current);
+    traffic = generateTraffic(numOfTraffic);
+  }
 
   useEffect(() => {
     const carCanvas = carCanvasRef.current;
@@ -108,13 +124,15 @@ const SelfDriving = () => {
         <button className="control-button" onClick={() => save()}>
           save
         </button>
+        <button className="control-button" onClick={() => resetCars()}>
+          reset
+        </button>
         <button className="control-button" onClick={() => discard()}>
           clear
         </button>
       </div>
 
       <div className="self-driving-container" ref={containerRef}>
-        {/* <Canvas draw={road.draw}></Canvas> */}
         <canvas id="carCanvas" ref={carCanvasRef}></canvas>
         <canvas id="networkCanvas" ref={networkCanvasRef}></canvas>
       </div>

@@ -1,5 +1,7 @@
 .self-driving-container {
   height: 50vh;
+  display: flex;
+  justify-content: center;
 }
 /* 
 #carCanvas {

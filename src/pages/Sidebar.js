@@ -13,11 +13,11 @@ const Sidebar = () => {
   return (
     <div className="sidebar-container">
       <SideBarIcon icon={<FaHome size="32" />} link="/Home" text="Home" />
-      {/* <SideBarIcon
+      <SideBarIcon
         icon={<FaMapMarkedAlt size="28" />}
         link="/Pathing2"
         text="Graph"
-      /> */}
+      />
       <SideBarIcon
         icon={<MdOutlineSort size="32" />}
         link="/Sort"

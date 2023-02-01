@@ -99,22 +99,23 @@ const Pathing2 = () => {
     let q = [];
     q.push(startNode);
     console.log(q);
-    while (q.length > 0) {
+    while (q.length > 0 && !targetFound && tempTrace.length < rows * cols) {
       let node = q.shift();
+      if (searchGraph[node[0]][node[1]] === 1) {
+        continue;
+      }
       if (searchGraph[node[0]][node[1]] === 2) {
-        searchGraph = true;
+        targetFound = true;
         return;
       }
       if (searchGraph[node[0]][node[1]] === 0) {
         searchGraph[node[0]][node[1]] = 1;
         tempTrace.push(searchGraph.map((inner) => inner.slice()));
       }
-      if (node[0] + 1 < rows && node[0] + 1 !== 1)
-        q.push([node[0] + 1, node[1]]);
-      if (node[0] - 1 >= 0 && node[0] - 1 !== 1) q.push([node[0] - 1, node[1]]);
-      if (node[1] + 1 < rows && node[1] + 1 !== 1)
-        q.push([node[0], node[1] + 1]);
-      if (node[1] - 1 >= 0 && node[1] - 1 !== 1) q.push([node[0], node[1] - 1]);
+      if (node[0] + 1 < rows) q.push([node[0] + 1, node[1]]);
+      if (node[0] - 1 >= 0) q.push([node[0] - 1, node[1]]);
+      if (node[1] + 1 < rows) q.push([node[0], node[1] + 1]);
+      if (node[1] - 1 >= 0) q.push([node[0], node[1] - 1]);
     }
   }
 
@@ -141,11 +142,13 @@ const Pathing2 = () => {
       tempTrace.push(searchGraph.map((inner) => inner.slice()));
     }
 
-    // //traverse
-    dfs([node[0] - 1, node[1]]);
-    dfs([node[0] + 1, node[1]]);
-    dfs([node[0], node[1] - 1]);
-    dfs([node[0], node[1] + 1]);
+    if (tempTrace.length < rows * cols) {
+      // //traverse
+      dfs([node[0] - 1, node[1]]);
+      dfs([node[0] + 1, node[1]]);
+      dfs([node[0], node[1] - 1]);
+      dfs([node[0], node[1] + 1]);
+    }
   }
 
   const compareArrays = (a, b) => {
@@ -175,6 +178,25 @@ const Pathing2 = () => {
         </select>
         <button
           className="control-button"
+          disabled={!trace.length > 1}
+          onClick={() => {
+            setCurrentStep(0);
+          }}
+        >
+          reset
+        </button>
+        <button
+          className="control-button play"
+          disabled={!trace.length > 1}
+          onClick={() => {
+            setPaused((prev) => !prev);
+          }}
+        >
+          {isPaused ? "play" : "pause"}
+        </button>
+
+        <button
+          className="control-button"
           disabled={!trace.length > 0}
           onClick={() => {
             stepBackward();
@@ -183,34 +205,27 @@ const Pathing2 = () => {
           -
         </button>
         <button
-          className="control-button play"
-          disabled={!trace.length > 0}
-          onClick={() => {
-            setPaused((prev) => !prev);
-          }}
-        >
-          {isPaused ? "play" : "pause"}
-        </button>
-        <button
           className="control-button"
-          disabled={!trace.length > 0}
+          disabled={!trace.length > 1}
           onClick={() => {
             stepForward();
           }}
         >
           +
         </button>
-        <i>
-          start: {startNode[0]}, {startNode[1]}
-          {""}
-        </i>
-        <i>
-          target: {targetNode[0]}, {targetNode[1]}
-          {"  "}
-        </i>
-        <i>
-          steps: {currentStep}/{steps}
-        </i>
+      </div>
+      <div className="info-container">
+        {!startNode.length > 0 ? (
+          <i>Select a start node</i>
+        ) : !targetNode.length > 0 ? (
+          <i>Select a target node</i>
+        ) : trace.length === 0 ? (
+          <i>Hit go!</i>
+        ) : (
+          <i className="info">
+            step: {currentStep} / {trace.length - 1}
+          </i>
+        )}
       </div>
       <div className="pathing-container">
         <div className="path-graph">
