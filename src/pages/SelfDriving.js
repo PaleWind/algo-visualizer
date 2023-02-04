@@ -17,21 +17,16 @@ const SelfDriving = () => {
   const numOfTraffic = useRef(1);
 
   const road = new Road(carCanvasWidth / 2, carCanvasWidth * 0.9);
-
   let traffic = generateTraffic(numOfTraffic);
-  // let traffic = [
-  //   new Car(road.getLaneCenter(1), -100, 30, 50, "DUMMY", 2),
-  //   //new Car(road.getLaneCenter(2), -300, 30, 50, "DUMMY", 2),
-  //   //new Car(road.getLaneCenter(0), -300, 30, 50, "DUMMY", 2),
-  // ];
-
   let cars = generateCars(numOfCars.current);
   let bestCar = cars[0];
+  let mutateAmt = useRef(0.2);
+
   if (localStorage.getItem("bestBrain")) {
     for (let i = 0; i < cars.length; i++) {
       cars[i].brain = JSON.parse(localStorage.getItem("bestBrain"));
       if (i !== 0) {
-        NeuralNetwork.mutate(cars[i].brain, 0.2);
+        NeuralNetwork.mutate(cars[i].brain, mutateAmt.current);
       }
     }
   }
@@ -121,6 +116,17 @@ const SelfDriving = () => {
         <i id="title">Self Driving Car</i>
       </div>
       <div className="controls-container">
+        <i>mutate: {mutateAmt.current}</i>
+        <input
+          className="slider-input"
+          type="range"
+          min="0"
+          max={100}
+          onChange={(e) => {
+            mutateAmt.current = e.target.value / 100;
+          }}
+          defaultValue={mutateAmt.current}
+        />
         <button className="control-button" onClick={() => save()}>
           save
         </button>

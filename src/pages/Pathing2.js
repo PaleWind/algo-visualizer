@@ -11,7 +11,7 @@ const Pathing2 = () => {
   const [speed, setSpeed] = useState(100);
   let currentAlgo = useRef(0);
 
-  let algos = [dfs, bfs];
+  let algos = [bfs, dfs];
   let searchGraph = [];
   let tempTrace = [];
   let targetFound = false;
@@ -171,8 +171,8 @@ const Pathing2 = () => {
           name="Algorithm"
           id="selected-algo"
         >
-          <option value={0}>DFS</option>
-          <option value={1}>BFS</option>
+          <option value={0}>BFS</option>
+          <option value={1}>DFS</option>
           {/* <option value="A*">A*</option>
           <option value="Daijkstra">Daijkstra</option> */}
         </select>
