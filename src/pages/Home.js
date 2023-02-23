@@ -7,14 +7,16 @@ const Home = () => {
       <div className="title-container">
         <i id="title">Algorithm Visualizer</i>
       </div>
-      <div className="controls-container">
+      <div className="home-container">
         <h4 className="info-text">
           Hello, this is a small project that I decided to undertake in order to
           learn more about React and algorithms. It includes visualizers for
-          sorting and graph traversing algorithms and was a bit rushed.{" "}
+          sorting and graph traversing algorithms as well as an AI project.{" "}
         </h4>
+        <div className="info-text">
+          <i>Want to buy a light? Contact Us from the shop!</i>
+        </div>
       </div>
-      <div className="visualizer-container"></div>
     </div>
   );
 };

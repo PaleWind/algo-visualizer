@@ -5,8 +5,8 @@ import "../Styles/App.css";
 import "../Styles/Sidebar.css";
 
 import { MdOutlineSort } from "react-icons/md";
-import { FaHome, FaMapMarkedAlt, FaBrain } from "react-icons/fa";
-import { SiGraphql } from "react-icons/si";
+import { FaHome, FaMapMarkedAlt, FaBrain, FaStoreAlt } from "react-icons/fa";
+// import { SiGraphql } from "react-icons/si";
 import DarkMode from "../DarkMode";
 
 const Sidebar = () => {
@@ -30,6 +30,12 @@ const Sidebar = () => {
         text="GraphQL"
       /> */}
       <SideBarIcon icon={<FaBrain size="20" />} link="/SelfDriving" text="AI" />
+      <SideBarLink
+        icon={<FaStoreAlt size="20" />}
+        link="https://shadow-work-lighting.com/"
+        text="Shop"
+      />
+
       <DarkMode />
     </div>
   );
@@ -41,6 +47,15 @@ const SideBarIcon = ({ icon, link, text = "text" }) => {
       {icon}
       <span className="sidebar-tooltip">{text}</span>
     </Link>
+  );
+};
+
+const SideBarLink = ({ icon, link, text = "text" }) => {
+  return (
+    <a href={link} className="sidebar-icon">
+      {icon}
+      <span className="sidebar-tooltip">{text}</span>
+    </a>
   );
 };
 
