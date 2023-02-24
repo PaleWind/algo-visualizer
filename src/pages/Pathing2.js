@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 
+import "../Styles/App.css";
+import "../Styles/pathing.css";
+
 const Pathing2 = () => {
   const rows = 15;
   const cols = 15;
